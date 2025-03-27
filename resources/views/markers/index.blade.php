@@ -17,15 +17,6 @@
             width: 100%;
             padding: 20px;
         }
-        .header {
-            background-color: #f8f9fa;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
         .page-layout {
             display: flex;
             flex-wrap: wrap;
@@ -122,9 +113,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>All Markers</h1>
-        </div>
         
         @if(session('success'))
         <div class="alert alert-success">
