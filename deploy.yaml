@@ -2,7 +2,7 @@ import:
   - recipe/laravel.php
 
 config:
-  repository: "https://github.com/Beeak/maps-thing.git"
+  repository: "git@github.com:Beeak/ralf-hajus.git"
 
 hosts:
   stage:
