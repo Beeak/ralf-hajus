@@ -9,20 +9,18 @@ use Illuminate\Support\Facades\Config;
 
 class WeatherController extends Controller
 {
-    protected $apiKey;
-    protected $baseUrl;
 
     public function getWeather()
     {
-        $this->apiKey = Config::get('services.openweather.key');
-        $this->baseUrl = Config::get('services.openweather.base_url');
+        $apiKey = Config('services.openweather.key');
+        $baseUrl = Config('services.openweather.base_url');
         
-        return Cache::remember('weather_data', 1800, function () {
+        return Cache::remember('weather_data', 1800, function () use ($apiKey, $baseUrl) {
             $city = 'Tallinn';
             
-            $response = Http::get("{$this->baseUrl}/2.5/weather", [
+            $response = Http::get("{$baseUrl}/2.5/weather", [
                 'q' => $city,
-                'appid' => $this->apiKey,
+                'appid' => $apiKey,
                 'units' => 'metric'
             ]);
             
