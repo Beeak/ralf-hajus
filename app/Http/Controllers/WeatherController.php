@@ -12,17 +12,12 @@ class WeatherController extends Controller
     protected $apiKey;
     protected $baseUrl;
 
-    public function __construct()
+    public function getWeather()
     {
         $this->apiKey = Config::get('services.openweather.key');
         $this->baseUrl = Config::get('services.openweather.base_url');
-    }
-
-    public function getWeather()
-    {
-        $cacheKey = 'weather_data';
         
-        return Cache::remember($cacheKey, 1800, function () {
+        return Cache::remember('weather_data', 1800, function () {
             $city = 'Tallinn';
             
             $response = Http::get("{$this->baseUrl}/2.5/weather", [
