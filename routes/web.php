@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MarkerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WeatherController;
@@ -35,4 +36,10 @@ Route::resource('markers', MarkerController::class);
 Route::resource('blog', BlogController::class)
 ->only(['create', 'store', 'edit', 'update', 'destroy'])
 ->middleware('auth');
+
 Route::resource('blog', BlogController::class)->except(['create', 'store', 'edit', 'update', 'destroy']);
+
+Route::middleware('auth')->group(function () {
+    Route::resource('blog.comments', CommentController::class)
+        ->only(['store', 'edit', 'update', 'destroy']);
+});

@@ -20,7 +20,7 @@ class BlogController extends Controller
     }
     public function show($id)
     {
-        $post = Post::with('user')->findOrFail($id);
+        $post = Post::with('user', 'comments.user')->findOrFail($id);
         return view('blog.show', compact('post'));
     }
     public function create()
