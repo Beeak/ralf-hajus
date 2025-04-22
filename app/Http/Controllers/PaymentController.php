@@ -11,7 +11,7 @@ class PaymentController extends Controller
 {
     public function createCheckoutSession(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        Stripe::setApiKey(config('services.stripe.secret_key'));
         $cart = session()->get('cart', []);
         $lineItems = [];
 

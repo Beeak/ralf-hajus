@@ -46,4 +46,8 @@ return [
         'base_url' => env('OPENWEATHER_API_BASE_URL'),
     ],
 
-];
+    'stripe' => [
+        'key' => env('STRIPE_PUBLISHABLE_KEY'),
+        'secret_key' => env('STRIPE_SECRET_KEY')
+    ],
+    ];
