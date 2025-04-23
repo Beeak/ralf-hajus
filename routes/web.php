@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AircraftController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
         ->only(['store', 'edit', 'update', 'destroy']);
 });
 
+
 # Shop
 
 Route::resource('shop', ShopController::class);
@@ -60,3 +62,7 @@ Route::post('cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 Route::post('checkout/create', [PaymentController::class, 'createCheckoutSession'])->name('checkout.create');
 Route::get('checkout/success', [PaymentController::class, 'success'])->name('checkout.success');
 Route::get('checkout/cancel', [PaymentController::class, 'cancel'])->name('checkout.cancel');
+
+# Aircraft API
+
+Route::resource('aircraft', AircraftController::class);
