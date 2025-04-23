@@ -24,6 +24,23 @@
                 </div>
             @endif
 
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Subjects from API</h3>
+                    
+                    <div id="subjects-container" class="mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="flex justify-between mb-4">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Loading subjects from external API...</p>
+                            <button id="refresh-subjects" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
+                                Refresh Data
+                            </button>
+                        </div>
+                        <div id="subjects-data" class="overflow-x-auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">All Aircraft</h3>
@@ -108,4 +125,89 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchSubjectsData();
+            
+            document.getElementById('refresh-subjects').addEventListener('click', function() {
+                fetchSubjectsData();
+            });
+            
+            function fetchSubjectsData() {
+                const subjectsContainer = document.getElementById('subjects-data');
+                subjectsContainer.innerHTML = '<p class="text-center py-4">Loading...</p>';
+                
+                fetch('https://hajusrakendus.tak22jasin.itmajakas.ee/api/subjects')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        displaySubjectsData(data);
+                    })
+                    .catch(error => {
+                        subjectsContainer.innerHTML = `<p class="text-red-500 text-center py-4">Error fetching data: ${error.message}</p>`;
+                    });
+            }
+            
+            function displaySubjectsData(data) {
+                const subjectsContainer = document.getElementById('subjects-data');
+                
+                if (!data || data.length === 0) {
+                    subjectsContainer.innerHTML = '<p class="text-center py-4">No subjects found</p>';
+                    return;
+                }
+                
+                let tableHtml = `
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Title</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Interest Level</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Image</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                `;
+                
+                data.forEach(subject => {
+                    tableHtml += `
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">${subject.id || 'N/A'}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">
+                                <div class="font-medium">${subject.title || 'N/A'}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-md truncate">${subject.description ? subject.description.substring(0, 100) + '...' : 'N/A'}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">${subject.category || 'N/A'}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    ${subject.interest_level === 'high' ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100' : 
+                                    subject.interest_level === 'moderate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100' : 
+                                    'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}">
+                                    ${subject.interest_level || 'N/A'}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                ${subject.image ? 
+                                    `<img src="${subject.image}" alt="${subject.title}" class="h-12 w-20 object-cover rounded">` : 
+                                    'No image'}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableHtml += `
+                        </tbody>
+                    </table>
+                `;
+                
+                subjectsContainer.innerHTML = tableHtml;
+            }
+        });
+    </script>
 </x-app-layout>
