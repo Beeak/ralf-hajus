@@ -25,7 +25,6 @@ tasks:
 
 after:
   deploy:failed: deploy:unlock
-  deploy:success: create:database
 
 before:
   deploy:success: opcache:clear
