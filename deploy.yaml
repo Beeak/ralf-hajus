@@ -20,7 +20,7 @@ tasks:
     - run: "cd {{release_path}} && npx vite build"
 
   sqlite:dbcreate:
-    - run: "cd {{release_path/database}} && touch database.sqlite"
+    - run: "cd {{release_path}} && cd database && touch database.sqlite"
 
   deploy:
     - "deploy:prepare"
