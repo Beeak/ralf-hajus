@@ -13,10 +13,7 @@ hosts:
 
 tasks:
   opcache:clear:
-    - run: killall php84-cgi || true
-
-  create:database:
-    - run: mkdir -p {{release_path}}/database && touch {{release_path}}/database/database.sqlite && chmod 777 {{release_path}}/database/database.sqlite
+    - run: killall php84-cgi || true\
 
   deploy:
     - "deploy:prepare"
