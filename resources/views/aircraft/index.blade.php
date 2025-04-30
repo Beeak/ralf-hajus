@@ -30,7 +30,7 @@
                     
                     <div id="subjects-container" class="mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
                         <div class="flex justify-between mb-4">
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Loading subjects from external API...</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Subjects from Kevin Jasin's API</p>
                             <button id="refresh-subjects" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
                                 Refresh Data
                             </button>

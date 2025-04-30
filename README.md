@@ -2,7 +2,7 @@
 
 ## Lingid
 
-#######
+-   [Lennuki API](https://ralf-hajus.tak22kaalma.itmajakas.ee/aircraft)
 
 ## Table of Contents
 
