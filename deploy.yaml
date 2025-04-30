@@ -13,7 +13,7 @@ hosts:
 
 tasks:
   opcache:clear:
-    - run: killall php84-cgi || true\
+    - run: killall php84-cgi || true
 
   deploy:
     - "deploy:prepare"
