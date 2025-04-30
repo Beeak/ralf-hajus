@@ -19,6 +19,9 @@ tasks:
     - run: "cd {{release_path}} && npm ci"
     - run: "cd {{release_path}} && npx vite build"
 
+  sqlite:dbcreate:
+    - run: "cd {{release_path/database}} && touch database.sqlite"
+
   deploy:
     - "deploy:prepare"
     - "deploy:vendors"
@@ -30,6 +33,7 @@ tasks:
 
 after:
   deploy:failed: deploy:unlock
+  deploy:prepare: sqlite:dbcreate
 
 before:
   deploy:success: opcache:clear
