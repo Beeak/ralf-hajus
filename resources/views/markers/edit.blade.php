@@ -1,139 +1,125 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Marker</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .card {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .form-control {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        .is-invalid {
-            border-color: #dc3545;
-        }
-        .invalid-feedback {
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 5px;
-            display: block;
-        }
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-        .btn-primary {
-            background-color: #4285F4;
-            color: white;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        .button-group {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Edit Marker</h1>
-        
-        <div class="card">
-            <form method="POST" action="/markers/{{ $marker->id }}">
-                @csrf
-                @method('PUT')
-                
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $marker->name }}" required>
-                    @error('name')
-                        <span class="invalid-feedback">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Edit Marker') }}
+            </h2>
+        </div>
+    </x-slot>
 
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" rows="3">{{ $marker->description }}</textarea>
-                    @error('description')
-                        <span class="invalid-feedback">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <form method="POST" action="{{ route('markers.update', $marker->id) }}">
+                        @csrf
+                        @method('PUT')
+                        
+                        <div class="mb-4">
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                            <input type="text" id="name" name="name" value="{{ $marker->name }}" required
+                                   class="w-full rounded-md shadow-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('name') border-red-500 @enderror">
+                            @error('name')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                <div class="form-group">
-                    <label for="latitude">Latitude</label>
-                    <input type="text" id="latitude" class="form-control @error('latitude') is-invalid @enderror" name="latitude" value="{{ $marker->latitude }}" required>
-                    @error('latitude')
-                        <span class="invalid-feedback">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                        <div class="mb-4">
+                            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                            <textarea id="description" name="description" rows="3"
+                                      class="w-full rounded-md shadow-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('description') border-red-500 @enderror">{{ $marker->description }}</textarea>
+                            @error('description')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                <div class="form-group">
-                    <label for="longitude">Longitude</label>
-                    <input type="text" id="longitude" class="form-control @error('longitude') is-invalid @enderror" name="longitude" value="{{ $marker->longitude }}" required>
-                    @error('longitude')
-                        <span class="invalid-feedback">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="latitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Latitude</label>
+                                <input type="text" id="latitude" name="latitude" value="{{ $marker->latitude }}" required
+                                       class="w-full rounded-md shadow-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('latitude') border-red-500 @enderror">
+                                @error('latitude')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                <div class="button-group">
-                    <button type="submit" class="btn btn-primary">
-                        Update Marker
-                    </button>
-                    <a href="/markers" class="btn btn-secondary">
-                        Cancel
-                    </a>
+                            <div>
+                                <label for="longitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Longitude</label>
+                                <input type="text" id="longitude" name="longitude" value="{{ $marker->longitude }}" required
+                                       class="w-full rounded-md shadow-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('longitude') border-red-500 @enderror">
+                                @error('longitude')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex gap-4">
+                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-medium text-white hover:bg-blue-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md">
+                                Update Marker
+                            </button>
+                            <a href="{{ route('markers.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-medium text-white hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
+            
+            <div class="mt-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Map Preview</h3>
+                    <div id="map" class="h-[400px] rounded-lg overflow-hidden border dark:border-gray-700"></div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+
+    @push('scripts')
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google.maps.api_key') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const latitude = parseFloat(document.getElementById('latitude').value);
+            const longitude = parseFloat(document.getElementById('longitude').value);
+            
+            if(isNaN(latitude) || isNaN(longitude)) {
+                document.getElementById('map').innerHTML = '<div class="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">Invalid coordinates</div>';
+                return;
+            }
+            
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: latitude, lng: longitude },
+                zoom: 15,
+                styles: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? [
+                    { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                    { featureType: "water", elementType: "geometry", stylers: [{ color: "#17263c" }] },
+                    { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#515c6d" }] },
+                    { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#d59563" }] },
+                ] : []
+            });
+            
+            const marker = new google.maps.Marker({
+                position: { lat: latitude, lng: longitude },
+                map: map,
+                title: document.getElementById('name').value
+            });
+            
+            // Listen for changes in coordinates
+            document.getElementById('latitude').addEventListener('change', updateMarker);
+            document.getElementById('longitude').addEventListener('change', updateMarker);
+            
+            function updateMarker() {
+                const lat = parseFloat(document.getElementById('latitude').value);
+                const lng = parseFloat(document.getElementById('longitude').value);
+                
+                if(!isNaN(lat) && !isNaN(lng)) {
+                    const position = { lat, lng };
+                    marker.setPosition(position);
+                    map.setCenter(position);
+                }
+            }
+        });
+    </script>
+    @endpush
+</x-app-layout>
